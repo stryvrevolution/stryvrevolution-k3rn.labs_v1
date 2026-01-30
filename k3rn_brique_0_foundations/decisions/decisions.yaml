@@ -1,0 +1,42 @@
+project:
+  brand_name: "k3rn.labs"
+  language_default: "français"
+  casing_exceptions:
+    - "k3rn.labs"
+    - "k0"
+    - "k1"
+    - "k2"
+    - "k* (tous les labs)"
+market:
+  initial_regions:
+    - "Belgique (Wallonie)"
+    - "France"
+    - "Francophonie proche"
+  hosting_region: "Europe"
+  compliance: ["RGPD"]
+org:
+  multi_tenant_organisation_v1: true
+  collaboration_v1: true
+  roles_v1: ["owner", "editor", "viewer"]
+user_profile:
+  onboarding_required: true
+  captures_context: true
+ui_ux:
+  signature_minimal_v1: true
+  concept: "espaces de coworking (labs = espaces), navigation par zones/espaces"
+  default_theme_direction: "premium sobre, lisible, hiérarchie claire, composants cohérents"
+stack_v1:
+  frontend: ["Next.js (App Router)", "TypeScript", "Tailwind CSS", "shadcn/ui"]
+  validation: ["Zod", "React Hook Form"]
+  backend: ["Next.js Route Handlers (API)", "Node runtime"]
+  database: ["PostgreSQL (Supabase)"]
+  auth: ["Supabase Auth"]
+  storage: ["Supabase Storage"]
+  orm: ["Drizzle ORM"]
+  deploy: ["Vercel", "Supabase (EU region)"]
+principles:
+  user_is_source_of_truth: true
+  ai_never_decides: true
+  decisions_are_traceable: true
+  layered_data_model: ["raw", "interpreted", "structured", "validated"]
+  labs_are_plugins: true
