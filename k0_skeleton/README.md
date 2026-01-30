@@ -1,36 +1,85 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+K0 Skeleton (Next.js App Router) pour Kern Labs.
 
-## Getting Started
+## Prérequis
 
-First, run the development server:
+- Node 20+
+- npm
+
+## Configuration
+
+1) Copier le fichier d’exemple d’environnement et le remplir:
+
+```bash
+cp .env.example .env.local
+```
+
+Variables attendues:
+
+```
+SUPABASE_URL=...                    # URL du projet Supabase
+SUPABASE_ANON_KEY=...               # Clé anonyme Supabase
+```
+
+2) Installer les dépendances:
+
+```bash
+npm install
+```
+
+## Démarrer
+
+Développement:
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Production:
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+npm run build
+npm run start
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Endpoints k0 (smoke tests)
 
-## Learn More
+Exemples curl (dev: http://localhost:3000):
 
-To learn more about Next.js, take a look at the following resources:
+- Start session
+```bash
+curl -s -X POST http://localhost:3000/api/k0/session/start \
+	-H 'Content-Type: application/json' \
+	-d '{"projectId":"proj_demo","startedBy":"user_demo"}'
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- Ingest text
+```bash
+curl -s -X POST http://localhost:3000/api/k0/ingest/text \
+	-H 'Content-Type: application/json' \
+	-d '{"projectId":"proj_demo","sessionId":"sess_demo","text":"Bonjour k0","userId":"user_demo"}'
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- Expert chat (innovation)
+```bash
+curl -s -X POST http://localhost:3000/api/k0/expert/chat \
+	-H 'Content-Type: application/json' \
+	-d '{"projectId":"proj_demo","sessionId":"sess_demo","expertId":"innovation","message":"Idées produit?","userId":"user_demo"}'
+```
 
-## Deploy on Vercel
+- Score
+```bash
+curl -s -X POST http://localhost:3000/api/k0/score \
+	-H 'Content-Type: application/json' \
+	-d '{"projectId":"proj_demo","sessionId":"sess_demo","userId":"user_demo"}'
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+- Validate
+```bash
+curl -s -X POST http://localhost:3000/api/k0/validate \
+	-H 'Content-Type: application/json' \
+	-d '{"projectId":"proj_demo","sessionId":"sess_demo","validatedBy":"user_demo"}'
+```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Notes:
+- Si la base Supabase n’est pas migrée, attendez-vous à des erreurs 4xx/5xx côté DB; cela prouve déjà que les routes sont actives.
+- Les experts dispo: innovation, produit, critique (voir src/app/api/_shared/experts.ts).
