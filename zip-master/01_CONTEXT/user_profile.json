@@ -1,0 +1,6 @@
+{
+  "role": "builder",
+  "experience": "advanced",
+  "constraints": ["no secrets committed"],
+  "locale": "fr"
+}
