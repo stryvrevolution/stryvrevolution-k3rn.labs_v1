@@ -1,0 +1,100 @@
+{
+  "files": [
+    {
+      "path": "00_README.md",
+      "sha256": "5fdd647e7a647ec3b5a56d979e04b1ca4cd5aaf8fc2174974661b7d8241bdadb"
+    },
+    {
+      "path": "01_CONTEXT/environment.json",
+      "sha256": "4481ebcc3af1dae1feef9f31242d2d72d2a4dd362a331821a7adef3cfb6b2e5e"
+    },
+    {
+      "path": "01_CONTEXT/project_context.md",
+      "sha256": "44cc5763e697e55d8304faf98af469c8209bc1f6017fa524fbe02efbd50397f5"
+    },
+    {
+      "path": "01_CONTEXT/sources.md",
+      "sha256": "bb32bf8dc8519f6128501d3ca57f2f9efe2b40131b44adf8089f699ed1806982"
+    },
+    {
+      "path": "01_CONTEXT/user_profile.json",
+      "sha256": "dba6db7d00b7993e29cd9226052587de34e76b821d16e3941bf074a6c449fb0f"
+    },
+    {
+      "path": "02_CORTEX/contradictions.json",
+      "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570"
+    },
+    {
+      "path": "02_CORTEX/cortex_map.md",
+      "sha256": "678a863b36cbd1ece942507b1c89dee082e6ce5e3ed9b495ad12228559797a66"
+    },
+    {
+      "path": "02_CORTEX/decisions.json",
+      "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570"
+    },
+    {
+      "path": "02_CORTEX/facts.json",
+      "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570"
+    },
+    {
+      "path": "02_CORTEX/history.json",
+      "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570"
+    },
+    {
+      "path": "02_CORTEX/hypotheses.json",
+      "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570"
+    },
+    {
+      "path": "02_CORTEX/structures.json",
+      "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570"
+    },
+    {
+      "path": "03_DECISIONS/decisions_index.json",
+      "sha256": "7478e7d941cd6bd87aba625cd1c5f9901e6c207371a2008ec945a356b3f7839f"
+    },
+    {
+      "path": "04_RECOMMENDATIONS/rationale.md",
+      "sha256": "675431b48ceac525ee7d5e8432f15f9fa1704d22069e70e31e8b7127917ab7c4"
+    },
+    {
+      "path": "04_RECOMMENDATIONS/recommendations.json",
+      "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570"
+    },
+    {
+      "path": "05_EXECUTION/CHECKLIST.md",
+      "sha256": "a842ee64227fdec0bc76431519bb35f132c19ee7891cc013c54e7d5b10cd965a"
+    },
+    {
+      "path": "05_EXECUTION/EXECUTION_PLAN.md",
+      "sha256": "f3c8f5d2783f1194830b9b4f2db1a36ab11f684c4895cada1077211c704b5401"
+    },
+    {
+      "path": "05_EXECUTION/GUIDE.md",
+      "sha256": "6be6d80a02ca28c1e04c81fe16ee63d1b9907dd3b6c3e13f1a0c8643c014783d"
+    },
+    {
+      "path": "05_EXECUTION/PROMPTS/PROMPT_MASTER_PROGRAM.md",
+      "sha256": "8e1519777773a73a18cf68aadc3b5260a97362cc544f885b11cd3757aae3d540"
+    },
+    {
+      "path": "05_EXECUTION/PROMPTS/PROMPT_RULES.md",
+      "sha256": "b3aeee6b43b48f8e6bff5b1caf7f2d9b0c24f8bffbcda9b281b73123e6e4abec"
+    },
+    {
+      "path": "06_LABS/k0/input_contract.json",
+      "sha256": "6f88f21836744e85f4e7170b69a267a918133e5c005133fcb15869707cb85bb6"
+    },
+    {
+      "path": "06_LABS/k0/output_contract.json",
+      "sha256": "c4a2fe6cda67423b81e5762a9f3bfea2e5fb8965353fde8bf4d71a78510f3b82"
+    },
+    {
+      "path": "06_LABS/k1_placeholder/input_contract.json",
+      "sha256": "6f88f21836744e85f4e7170b69a267a918133e5c005133fcb15869707cb85bb6"
+    },
+    {
+      "path": "06_LABS/k1_placeholder/output_contract.json",
+      "sha256": "c4a2fe6cda67423b81e5762a9f3bfea2e5fb8965353fde8bf4d71a78510f3b82"
+    }
+  ]
+}

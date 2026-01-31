@@ -1,0 +1,132 @@
+import { supabase } from "./supabaseClient";
+
+export async function startK0Session(projectId: string, startedBy: string) {
+  const { data, error } = await supabase
+    .from("k0_sessions")
+    .insert({ project_id: projectId, started_by: startedBy })
+    .select("id")
+    .single();
+  if (error) throw error;
+  return data.id;
+}
+
+export async function ingestText(
+  projectId: string,
+  sessionId: string,
+  text: string,
+  userId: string,
+) {
+  const { data, error } = await supabase
+    .from("k0_ingestions")
+    .insert({
+      project_id: projectId,
+      session_id: sessionId,
+      source: "user_text",
+      payload: { text },
+      created_by: userId,
+    })
+    .select("id")
+    .single();
+  if (error) throw error;
+  return data.id;
+}
+
+export async function ingestLink(
+  projectId: string,
+  sessionId: string,
+  url: string,
+  userId: string,
+) {
+  const { data, error } = await supabase
+    .from("k0_ingestions")
+    .insert({
+      project_id: projectId,
+      session_id: sessionId,
+      source: "user_link",
+      payload: { url },
+      created_by: userId,
+    })
+    .select("id")
+    .single();
+  if (error) throw error;
+  return data.id;
+}
+
+export async function ingestFile(
+  projectId: string,
+  sessionId: string,
+  files: Array<{ name: string; size: number; type?: string }>,
+  userId: string,
+) {
+  const { data, error } = await supabase
+    .from("k0_ingestions")
+    .insert({
+      project_id: projectId,
+      session_id: sessionId,
+      source: "user_file",
+      payload: { files },
+      created_by: userId,
+    })
+    .select("id")
+    .single();
+  if (error) throw error;
+  return data.id;
+}
+
+export async function insertK0Score(
+  projectId: string,
+  sessionId: string,
+  score: number,
+  breakdown: any,
+  userId: string,
+) {
+  const { data, error } = await supabase
+    .from("k0_scores")
+    .insert({
+      project_id: projectId,
+      session_id: sessionId,
+      score,
+      breakdown,
+      created_by: userId,
+    })
+    .select("id")
+    .single();
+  if (error) throw error;
+  return data.id;
+}
+
+export async function validateK0(
+  projectId: string,
+  sessionId: string,
+  validatedBy: string,
+) {
+  const { data, error } = await supabase
+    .from("k0_validations")
+    .insert({
+      project_id: projectId,
+      session_id: sessionId,
+      validated_by: validatedBy,
+    })
+    .select("id")
+    .single();
+  if (error) throw error;
+  return data.id;
+}
+
+export async function addProjectMember(
+  projectId: string,
+  userId: string,
+  role: "owner" | "collaborator" | "viewer",
+) {
+  const { data, error } = await supabase
+    .from("project_members")
+    .insert({
+      project_id: projectId,
+      user_id: userId,
+      role,
+    })
+    .select("id")
+    .single();
+  if (error) throw error;
+  return data.id;
+}
