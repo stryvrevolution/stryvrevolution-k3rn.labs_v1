@@ -18,6 +18,26 @@ export default function ChatPanel({
   transcript: TranscriptItem[];
   selectedExpertLabel?: string;
 }) {
+  const [link, setLink] = React.useState("");
+  const [dropHover, setDropHover] = React.useState(false);
+
+  async function ingestLink() {
+    if (!link.trim()) return;
+    const ev = new CustomEvent("k0:ingest-link", { detail: link });
+    window.dispatchEvent(ev);
+    setLink("");
+  }
+
+  async function onDropFiles(e: React.DragEvent) {
+    e.preventDefault();
+    setDropHover(false);
+    const files = Array.from(e.dataTransfer.files || []);
+    const ev = new CustomEvent("k0:ingest-files", {
+      detail: files.map((f) => ({ name: f.name, size: f.size, type: f.type })),
+    });
+    window.dispatchEvent(ev);
+  }
+
   return (
     <section>
       <h2>
@@ -54,6 +74,45 @@ export default function ChatPanel({
       >
         Envoyer
       </button>
+
+      <div style={{ marginTop: 16 }}>
+        <h3>Ingestion — Lien</h3>
+        <input
+          type="url"
+          placeholder="https://..."
+          value={link}
+          onChange={(e) => setLink(e.target.value)}
+          disabled={disabled}
+          style={{ width: "100%" }}
+        />
+        <button
+          style={{ marginTop: 8 }}
+          onClick={ingestLink}
+          disabled={disabled || !link.trim()}
+        >
+          Ajouter le lien
+        </button>
+      </div>
+
+      <div style={{ marginTop: 16 }}>
+        <h3>Ingestion — Fichiers (drag & drop)</h3>
+        <div
+          onDragOver={(e) => {
+            e.preventDefault();
+            setDropHover(true);
+          }}
+          onDragLeave={() => setDropHover(false)}
+          onDrop={onDropFiles}
+          style={{
+            border: "2px dashed #ccc",
+            padding: 16,
+            textAlign: "center",
+            background: dropHover ? "#f7f7f7" : "transparent",
+          }}
+        >
+          Déposez vos fichiers ici…
+        </div>
+      </div>
     </section>
   );
 }

@@ -31,6 +31,48 @@ export async function ingestText(
   return data.id;
 }
 
+export async function ingestLink(
+  projectId: string,
+  sessionId: string,
+  url: string,
+  userId: string,
+) {
+  const { data, error } = await supabase
+    .from("k0_ingestions")
+    .insert({
+      project_id: projectId,
+      session_id: sessionId,
+      source: "user_link",
+      payload: { url },
+      created_by: userId,
+    })
+    .select("id")
+    .single();
+  if (error) throw error;
+  return data.id;
+}
+
+export async function ingestFile(
+  projectId: string,
+  sessionId: string,
+  files: Array<{ name: string; size: number; type?: string }>,
+  userId: string,
+) {
+  const { data, error } = await supabase
+    .from("k0_ingestions")
+    .insert({
+      project_id: projectId,
+      session_id: sessionId,
+      source: "user_file",
+      payload: { files },
+      created_by: userId,
+    })
+    .select("id")
+    .single();
+  if (error) throw error;
+  return data.id;
+}
+
 export async function insertK0Score(
   projectId: string,
   sessionId: string,

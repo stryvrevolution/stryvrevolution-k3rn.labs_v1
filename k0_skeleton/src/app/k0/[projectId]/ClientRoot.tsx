@@ -8,6 +8,14 @@ import ValidateButton from "./ValidateButton";
 import { experts as expertsMap } from "@/llm/experts";
 
 type TranscriptItem = { role: "user" | "expert"; text: string };
+type CortexNode = {
+  id: string;
+  type: "idea" | "question" | "hypothesis" | "constraint";
+  content: string;
+  source: "user" | "expert";
+  timestamp: number;
+  status: "brut" | "retenu" | "écarté";
+};
 
 export default function ClientRoot({ projectId }: { projectId: string }) {
   const [sessionId, setSessionId] = useState<string | null>(null);
@@ -18,6 +26,7 @@ export default function ClientRoot({ projectId }: { projectId: string }) {
   const [breakdown, setBreakdown] = useState<any | null>(null);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [cortexNodes, setCortexNodes] = useState<CortexNode[]>([]);
 
   const experts = useMemo(() => Object.values(expertsMap), []);
   const selectedExpert = expertId ? expertsMap[expertId] : undefined;
@@ -64,6 +73,25 @@ export default function ClientRoot({ projectId }: { projectId: string }) {
         ...t,
         { role: "expert", text: json.llmResponse as string },
       ]);
+      setCortexNodes((nodes) => [
+        ...nodes,
+        {
+          id: `${Date.now()}-u`,
+          type: message.trim().endsWith("?") ? "question" : "idea",
+          content: message,
+          source: "user",
+          timestamp: Date.now(),
+          status: "brut",
+        },
+        {
+          id: `${Date.now()}-e`,
+          type: "hypothesis",
+          content: json.llmResponse,
+          source: "expert",
+          timestamp: Date.now(),
+          status: "brut",
+        },
+      ]);
       setMessage("");
     } catch (e: any) {
       setError(e.message);
@@ -109,6 +137,16 @@ export default function ClientRoot({ projectId }: { projectId: string }) {
       });
       const json = await res.json();
       if (!res.ok) throw new Error(json.error || "validate failed");
+      await fetch("/api/k0/artifacts/export", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          projectId,
+          sessionId,
+          cortex: { nodes: cortexNodes },
+          transcript,
+        }),
+      });
       alert(`k0 validé: ${json.validationId}`);
     } catch (e: any) {
       setError(e.message);
@@ -122,6 +160,55 @@ export default function ClientRoot({ projectId }: { projectId: string }) {
     startSession();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  useEffect(() => {
+    function onIngestLink(ev: any) {
+      if (!sessionId) return;
+      const url = ev.detail as string;
+      fetch("/api/k0/ingest/link", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ projectId, sessionId, url, userId: "demo-user" }),
+      });
+      setCortexNodes((nodes) => [
+        ...nodes,
+        {
+          id: `${Date.now()}-l`,
+          type: "constraint",
+          content: `Lien ajouté: ${url}`,
+          source: "user",
+          timestamp: Date.now(),
+          status: "brut",
+        },
+      ]);
+    }
+    function onIngestFiles(ev: any) {
+      if (!sessionId) return;
+      const files = ev.detail as Array<{ name: string; size: number; type?: string }>;
+      fetch("/api/k0/ingest/file", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ projectId, sessionId, files, userId: "demo-user" }),
+      });
+      setCortexNodes((nodes) => [
+        ...nodes,
+        {
+          id: `${Date.now()}-f`,
+          type: "idea",
+          content: `Fichiers ajoutés: ${files.map((f) => f.name).join(", ")}`,
+          source: "user",
+          timestamp: Date.now(),
+          status: "brut",
+        },
+      ]);
+    }
+    window.addEventListener("k0:ingest-link", onIngestLink as any);
+    window.addEventListener("k0:ingest-files", onIngestFiles as any);
+    return () => {
+      window.removeEventListener("k0:ingest-link", onIngestLink as any);
+      window.removeEventListener("k0:ingest-files", onIngestFiles as any);
+    };
+  }, [projectId, sessionId]);
 
   return (
     <div
@@ -144,7 +231,7 @@ export default function ClientRoot({ projectId }: { projectId: string }) {
           transcript={transcript}
           selectedExpertLabel={selectedExpert?.label}
         />
-        <CortexPreview transcript={transcript} />
+        <CortexPreview transcript={transcript} cortexNodes={cortexNodes} />
         <ScorePanel
           score={score}
           breakdown={breakdown}

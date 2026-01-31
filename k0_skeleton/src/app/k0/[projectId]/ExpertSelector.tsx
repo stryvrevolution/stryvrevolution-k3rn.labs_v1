@@ -1,7 +1,7 @@
 "use client";
 import React from "react";
 
-type Expert = { id: string; label: string };
+type Expert = { id: string; label: string; role?: string };
 
 export default function ExpertSelector({
   experts,
@@ -17,19 +17,37 @@ export default function ExpertSelector({
   return (
     <section>
       <h2>Experts</h2>
-      <select
-        value={value}
-        onChange={(e) => onChange(e.target.value)}
-        disabled={disabled}
-        style={{ width: "100%" }}
-      >
-        <option value="">Choisir un expert…</option>
+      <div>
         {experts.map((expert) => (
-          <option key={expert.id} value={expert.id}>
-            {expert.label}
-          </option>
+          <label key={expert.id} style={{ display: "block", marginBottom: 8 }}>
+            <input
+              type="radio"
+              name="expert"
+              value={expert.id}
+              checked={value === expert.id}
+              onChange={() => onChange(expert.id)}
+              disabled={disabled}
+            />
+            <span style={{ marginLeft: 8, fontWeight: 600 }}>
+              {expert.label}
+            </span>
+            {expert.role && (
+              <div style={{ marginLeft: 26, color: "#666", fontSize: 12 }}>
+                {expert.role}
+              </div>
+            )}
+            <div
+              style={{
+                marginLeft: 26,
+                fontSize: 12,
+                color: value === expert.id ? "#0a0" : "#888",
+              }}
+            >
+              {value === expert.id ? "actif" : "inactif"}
+            </div>
+          </label>
         ))}
-      </select>
+      </div>
     </section>
   );
 }
